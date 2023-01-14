@@ -10,8 +10,13 @@ on:
       - 'extmod/**'
       - 'lib/**'
       - 'examples/**'
+      - 'mpy-cross/**'
       - 'ports/unix/**'
       - 'tests/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   minimal:
@@ -97,7 +102,7 @@ jobs:
       run: tests/run-tests.py --print-failures
 
   nanbox:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04 # use 20.04 to get python2
     steps:
     - uses: actions/checkout@v3
     - name: Install packages
